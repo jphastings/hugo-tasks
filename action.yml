@@ -1,0 +1,41 @@
+name: Run Hugo site task(s)
+description: Runs the defined (Taskfile) task(s), connected with a Hugo-based site. Task, Hugo, and Pagefind are available.
+author: jphastings
+inputs:
+  tasks:
+    description: The name of the task(s) to be run, as if you'd called them with Task. Eg. "build" would run `tash build`, "--dry build search" would run `task --dry build search`
+    default: build
+  task-version:
+    description: The version of Task to use (https://taskfile.dev)
+    default: 3.40.1
+  hugo-version:
+    description: The version of Hugo to use (https://gohugo.io)
+    default: 0.140.2
+  pagefind-version:
+    description: The version of Pagefind to use (https://pagefind.app)
+    default: 1.3.0
+runs:
+  using: composite
+  steps:
+    - name: Install Task CLI
+      shell: bash
+      run: |
+        wget -q -O ${{ runner.temp }}/task.tar.gz https://github.com/go-task/task/releases/download/v${{ inputs.task-version }}/task_linux_amd64.tar.gz \
+        && tar -xpf ${{ runner.temp }}/task.tar.gz task \
+        && mv task /usr/local/bin/task
+    - name: Install Hugo CLI
+      shell: bash
+      run: |
+        wget -q -O ${{ runner.temp }}/hugo.deb https://github.com/gohugoio/hugo/releases/download/v${{ inputs.hugo-version }}/hugo_extended_${{ inputs.hugo-version }}_linux-amd64.deb \
+        && sudo dpkg -i ${{ runner.temp }}/hugo.deb
+    - name: Install Pagefind CLI
+      shell: bash
+      run: |
+        wget -q -O ${{ runner.temp }}/pagefind.tar.gz https://github.com/CloudCannon/pagefind/releases/download/v${{ inputs.pagefind-version }}/pagefind-v${{ inputs.pagefind-version }}-x86_64-unknown-linux-musl.tar.gz \
+        && tar -xpf ${{ runner.temp }}/pagefind.tar.gz pagefind \
+        && mv pagefind /usr/local/bin/pagefind
+    - name: Run task(s)
+      shell: bash
+      env:
+        NO_COLOR: "1"
+      run: task ${{ inputs.tasks }}
