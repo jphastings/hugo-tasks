@@ -27,7 +27,7 @@ runs:
       shell: bash
       run: |
         wget -q -O ${{ runner.temp }}/hugo.deb https://github.com/gohugoio/hugo/releases/download/v${{ inputs.hugo-version }}/hugo_extended_${{ inputs.hugo-version }}_linux-amd64.deb \
-        && sudo dpkg -i ${{ runner.temp }}/hugo.deb
+        && dpkg -i ${{ runner.temp }}/hugo.deb
     - name: Install Pagefind CLI
       shell: bash
       run: |
