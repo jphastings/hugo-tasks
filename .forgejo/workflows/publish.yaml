@@ -11,7 +11,7 @@ jobs:
   build:
     runs-on: docker
     container:
-      image: docker/docker:cli
+      image: docker.io/docker:cli
     steps:
       -
         name: Login to Forgejo container registry
