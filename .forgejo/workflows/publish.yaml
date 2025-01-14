@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: host
+    runs-on: docker
     steps:
       -
         name: Login to Forgejo container registry
