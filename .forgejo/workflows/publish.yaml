@@ -10,6 +10,8 @@ permissions:
 jobs:
   build:
     runs-on: docker
+    container:
+      image: docker/docker:cli
     steps:
       -
         name: Login to Forgejo container registry
